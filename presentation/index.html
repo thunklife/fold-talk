@@ -1,0 +1,424 @@
+<!doctype html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+
+		<title>Know When To Fold 'Em</title>
+
+		<link rel="stylesheet" href="css/custom.css">
+		<link rel="stylesheet" href="css/reveal.css">
+		<link rel="stylesheet" href="css/theme/black.css">
+
+		<!-- Theme used for syntax highlighting of code -->
+		<link rel="stylesheet" href="lib/css/zenburn.css">
+
+		<!-- Printing and PDF exports -->
+		<script>
+			var link = document.createElement( 'link' );
+			link.rel = 'stylesheet';
+			link.type = 'text/css';
+			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
+			document.getElementsByTagName( 'head' )[0].appendChild( link );
+		</script>
+	</head>
+	<body>
+		<div class="reveal">
+			<div class="slides">
+        <section data-background="images/docks.jpeg">
+					<h1>Know When To Fold 'Em</h1>
+					<small>
+						An exploration into Array.prototype.reduce
+					</small>
+        </section>
+        <section data-background="images/kenny1.jpeg">
+					<h1>Know When To Fold 'Em</h1>
+					<small>
+						An exploration into Array.prototype.reduce
+					</small>
+        </section>
+				<section data-background="images/kenny2.jpeg">
+					<blockquote>
+						The reduce() method applies a function against an accumulator and each value of the array (from left-to-right) to reduce it to a single value...
+					</blockquote>
+					<cite>Mozilla Developer Network</cite>
+					<aside class="notes">
+						<p>
+							So `reduce` is built into all arrays and is a way to transform the array, item by item, into a new value.
+						</p>
+						<p>
+							In order to use `reduce` you need to supply a function to accumulate the values and an initial value. The initial value is optional. If you omit it, the first item in the array is used.
+						</p>
+						<p>
+							Here is a simple example to sum all the numbers in a list.
+						</p>
+					</aside>
+				</section>
+				<section data-background="images/kenny2.jpeg">
+					<pre>
+						<code>
+const xs = [1, 2, 3];
+const sum = xs.reduce((prev, current) => prev + current, 0);
+						</code>
+					</pre>
+					<span>also</span>
+					<pre>
+						<code>
+const xs = [1, 2, 3];
+const sum = xs.reduce((prev, current) => prev + current);
+						</code>
+					</pre>
+					<aside class="notes">
+						<p>
+							In each examples we're going to iterate over the array and apply
+							the provided function (which is just addition) to the previous value
+							and the current value. The result of that computation will be used
+							as the previous value in the next iteration.
+						</p>
+						<p>
+							The difference between the two is in the initial value that is
+							provided. When ommitted, the first value in the list is used.
+						</p>
+						<p>
+							Here is an illustration of the process.
+						</p>
+					</aside>
+				</section>
+				<section data-background="images/kenny2.jpeg">
+					<pre>
+						<code>
+xs.reduce((prev, curr) => prev + curr, 0)
+            0     1            1
+            1     2            3
+            3     3            6
+						</code>
+					</pre>
+					<span>also</span>
+					<pre>
+						<code>
+xs.reduce((prev, curr) => prev + curr)
+            1     2            3
+            3     3            6
+						</code>
+					</pre>
+					<aside class="notes">
+						<p>
+							The name "prev" is a bit of a confusing name. You might think that
+							it represents the result of the previous computation, but in the
+							first iteration, no computation has been performed. You migh then
+							think that represent the previous item in the array, but that is only
+							true in the second example and only for the first iteration. I prefer
+							the name "acc", short for "accumulator".
+						</p>
+					</aside>
+				</section>
+				<section data-background="images/kenny4.jpeg">
+					<h2>Reduce is for combining values in an array</h2>
+					<aside class="notes">
+						<p>
+							So reduce is a away to combine the values in an array into a single
+							value, such as summing them up or checking if any of the values are
+							truthy.
+						</p>
+					</aside>
+				</section>
+				<section data-background="images/kenny4.jpeg">
+					<h2 class="strike-through">Reduce is for combining values in an array</h2>
+					<aside class="notes">
+						<p>Sort of</p>
+					</aside>
+				</section>
+				<section data-background="images/kenny4.jpeg">
+					<h2>Reduce is just an abstraction.</h2>
+					<aside class="notes">
+						<p>
+							Reduce is a generalization of a pattern: iterating over a collection
+							and accumulating the values. How you accumulate them is up to you.
+						</P>
+						<p>
+							Don't let the description fool you the "single value" that reduce
+							returns can be anything.
+						</p>
+					</aside>
+				</section>
+				<section data-background="images/kenny4.jpeg">
+					<p class="values">
+						<span>6</span>
+						<span class="fragment">true</span>
+						<span class="fragment">"a value"</span>
+					</p>
+					<p class="fragment">
+						These are all single values.
+					</p>
+					<br />
+					<p class="fragment">
+						But so are these.
+					</p>
+					<p class="fragment values">
+						<span>[1, 2, 3]</span>
+						<span class="fragment">{id: 123, name: 'Johnny'}</span>
+					</p>
+					<aside class="notes">
+						<p>
+							Reduce could return 6, or true, or the string "a value"; all of
+							these are single values.
+						</p>
+						<p>
+							But so is an array of numbers, or an object.
+						</p>
+					</aside>
+				</section>
+				<section data-background="images/kenny4.jpeg">
+					<pre>
+						<code>
+const names = ['Al', 'Jean', 'Aaron', 'Al', 'John', 'John'];
+
+const nameCounts = {};
+
+for(const i = 0, i < names.length, i++) {
+  const name = names[i];
+  nameCounts[name] = nameCounts[name] + 1 || 1;
+}
+						</code>
+					</pre>
+					<aside class="notes">
+						<p>
+							Suppose you had a list of names, and you wanted to transform that
+							into an object where the key is a name, and the value is a number
+							representing how often that name occured in the list.
+						</p>
+						<p>
+							On possible solution is to loop over the list, like so.
+						</p>
+						<p>
+							And it totally works. Except now you've got all kinds of extra stuff
+							to keep in your head. There's a counter and a bounds check. You've
+							got to access each item by index. Of course this all very common
+							and most of us don't have to think twice about keep that stuff in
+							our heads.
+						</p>
+					</aside>
+				</section>
+				<section data-background="images/kenny4.jpeg">
+					<pre>
+						<code>
+const nameCounts = {};
+
+names.forEach((name) => {
+  nameCounts[name] = nameCounts[name] + 1 || 1;
+});
+						</code>
+					</pre>
+					<aside class="notes">
+						<p>
+							You could also do this. This solution gets rid of those extra
+							variables which is a win, but what if we went further and used
+							reduce?
+						</p>
+					</aside>
+				</section>
+				<section data-background="images/kenny4.jpeg">
+					<pre>
+						<code>
+const nameCounts = names.reduce((acc, name) => {
+  acc[name] = acc[name] + 1 || 1;
+  return acc;
+}, {});
+						</code>
+					</pre>
+					<aside class="notes">
+						<p>
+							The result is pretty similar actually, but there are a few things
+							that I argue make the latter is a better choice.
+						</p>
+					</aside>
+				</section>
+				<section data-background="images/kenny3.jpeg">
+					<h2>The case against foreach</h2>
+				</section>
+				<section data-background="images/kenny3.jpeg">
+					<h3>
+						Mutation
+					</h3>
+					<h3 class="fragment">
+						Purity
+					</h3>
+					<aside class="notes">
+						<p>
+							The most common use of forEach is mutation; reaching into a
+							collection and changing each of the values inside which is not
+							what we want. If we wanted to append the word "rocks!" to each
+							name, that would be a more appropriate use of foreEach
+						</p>
+						<p>
+							In this case each iteration has to reach outside of the arguments
+							provided in order to work. Any time a function relies on more than
+							the arguments it was given it is impure. It may not be a big deal
+							in this example, but anything could happen to the target object
+							before the loop runs meaning the result of the forEach isn't
+							guaranteed to be the same; another trait of an impure function.
+						</p>
+						<p>
+							Reduce, on the other hand, is pure. It only relies on the arguments
+							given. Granted, in may mutate that argument but it is then used,
+							in its new state, in the next iteration so the mutation is confined.
+							You are, at least as much as you can be in JavaScript, guaranteed
+							that it will behave the same each time you run it.
+						</p>
+					</aside>
+				</section>
+				<section data-background="images/kenny7.jpeg">
+					<h2>So what</h2>
+					<aside class="notes">
+						<p>
+							The idea that reduce is just an abstract way to transform an array
+							is extremely powerful. Once you begin to see it in that light, you
+							realize that lots of everyday functions can be defined in terms of
+							reduce
+						</p>
+					</aside>
+				</section>
+				<section data-background="images/kenny7.jpeg">
+					<h2>Map</h2>
+					<pre>
+						<code>
+const myMap = (fn, arr) => arr.reduce((prev, curr) => {
+    prev.push(fn(curr));
+    return prev;
+  }, []);
+						</code>
+					</pre>
+					<h2>Filter</h2>
+					<pre>
+						<code>
+const myFilter = (pred, arra) => arr.reduce((acc, curr) => {
+  if (pred(curr)) { acc.push(curr); }
+  return acc;
+}, [])
+						</code>
+					</pre>
+					<aside class="notes">
+						<p>
+							Both map and filter can be defined as reducing from one array into
+							another using push. Map simply applies a function to each value
+							first, and filter only pushes those values which satisfy some
+							predicate.
+						</p>
+					</aside>
+				</section>
+				<section data-background="images/kenny8.jpg">
+					<h2>But what can you do with that</h2>
+					<aside class="notes">
+						<p>
+							JavaScript already has lots of built-in functions; we don't need
+							to write them ourselves. What's more, they're on the Array
+							prototype, so we can can them.
+						</p>
+						<p>
+							Suppose we had a list of numbers from 1-100, and we wanted to take
+							only those divisible by 3 and then square them.
+						</p>
+					</aside>
+				</section>
+				<section data-background="images/kenny8.jpg">
+					<pre>
+						<code>
+oneToOneHundred
+  .filter((n) => n % 3 === 0)
+  .map((n) => n * n)
+						</code>
+					</pre>
+					<aside class="notes">
+						<p>
+							This is one option. We could use that built-in Array methods to
+							filter out numbers that aren't divisible by 3, and then map a
+							squaring function over the result.
+						</p>
+						<p>
+							But that means we pass through the array twice. Each array function
+							enumerates the values, and returns a new array. If more functions
+							get chained, that's more passes through the array. That's ot really
+							a concern here, but what if the array was much larger?
+						</p>
+					</aside>
+				</section>
+				<section data-background="images/kenny8.jpg">
+					<pre>
+						<code>
+onToOneHundred.reduce((acc, curr) => {
+  if (curr % 3 === 0) {
+    acc.push(curr * curr);
+  }
+
+  return acc;
+}, []);
+						</code>
+					</pre>
+					<aside class="notes">
+						<p>
+							If you know that filter and map are just special versions of reduce
+							you can use reduce to combine the two. We can check if the number
+							is divisible by 3 and square it at once.
+						</p>
+					</aside>
+				</section>
+				<section data-background="images/kenny6.jpeg">
+					<h2>Review</h2>
+					<aside class="notes">
+						<p>So to review</p>
+					</aside>
+				</section>
+				<section data-background="images/kenny6.jpeg">
+					<h4>Reduce isn't just about 'reducing' arrays</h4>
+					<h4 class="fragment">Reduce is an abstraction for transforming arrays</h4>
+					<h4 class="fragment">Map, filter, etc. are just special cases of reduce</h4>
+					<h4 class="fragment">We can use Reduce to collapse method chains</h4>
+					<aside class="notes">
+						<p>
+							Reduce isn't just about 'reducing' arrays; though the name and
+							documentation give that impression.
+						</p>
+						<p>
+							Reduce is just about transforming an array into a new value. That
+							value might be something obiously singular like a number or string
+							, but it might be an array or an object; and there is nothing
+							stopping you from turning an array into another array.
+						</p>
+						<p>
+							Once we see reduce in this light, we see how it can be used to
+							implement many of the more common array methods like map and
+							filter.
+						</p>
+						<p>
+							With that knowledge we can find ways to "collapse" method chains
+							into a single function that combines, for example, filtering and
+							mapping.
+						</p>
+					</aside>
+				</section>
+				<section data-background="images/kenny9.jpeg">
+					<h2>Thanks.</h2>
+				</section>
+			</div>
+		</div>
+
+		<script src="lib/js/head.min.js"></script>
+		<script src="js/reveal.js"></script>
+
+		<script>
+			// More info https://github.com/hakimel/reveal.js#configuration
+			Reveal.initialize({
+				history: true,
+				transition: 'fade',
+				backgroundTransition: 'fade',
+				// More info https://github.com/hakimel/reveal.js#dependencies
+				dependencies: [
+					{ src: 'plugin/markdown/marked.js' },
+					{ src: 'plugin/markdown/markdown.js' },
+					{ src: 'plugin/notes/notes.js', async: true },
+					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
+				]
+			});
+		</script>
+	</body>
+</html>

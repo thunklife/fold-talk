@@ -1,0 +1,38 @@
+.reveal {
+  background: #000;
+  background-color: #000;
+}
+.reveal > .backgrounds {
+  opacity: .3
+}
+
+.reveal blockquote {
+  font-size: 1.3em !important;
+}
+
+.reveal blockquote p {
+  padding: 25px;
+}
+
+.reveal cite {
+  font-size: .8em !important;
+  font-style: italic !important;
+}
+
+.reveal pre {
+  box-shadow: none !important;
+}
+
+.reveal code {
+  padding-left: 25px !important;
+  padding-right: 25px !important;
+}
+
+.strike-through {
+  text-decoration: line-through;
+}
+
+.values span {
+  margin: 0 25px !important;
+  font-family: monospace !important;
+}

@@ -129,7 +129,7 @@ xs.reduce((prev, curr) => prev + curr)
 					</aside>
 				</section>
 				<section data-background="images/kenny4.jpeg">
-					<h2>Reduce is just an abstraction.</h2>
+					<h2>Reduce is just an abstraction</h2>
 					<aside class="notes">
 						<p>
 							Reduce is a generalization of a pattern: iterating over a collection
@@ -175,7 +175,7 @@ const names = ['Al', 'Jean', 'Aaron', 'Al', 'John', 'John'];
 
 const nameCounts = {};
 
-for(const i = 0, i < names.length, i++) {
+for(let i = 0; i < names.length; i++) {
   const name = names[i];
   nameCounts[name] = nameCounts[name] + 1 || 1;
 }
@@ -291,7 +291,7 @@ const myMap = (fn, arr) => arr.reduce((prev, curr) => {
 					<h2>Filter</h2>
 					<pre>
 						<code>
-const myFilter = (pred, arra) => arr.reduce((acc, curr) => {
+const myFilter = (pred, arr) => arr.reduce((acc, curr) => {
   if (pred(curr)) { acc.push(curr); }
   return acc;
 }, [])
@@ -345,7 +345,7 @@ oneToOneHundred
 				<section data-background="images/kenny8.jpg">
 					<pre>
 						<code>
-onToOneHundred.reduce((acc, curr) => {
+oneToOneHundred.reduce((acc, curr) => {
   if (curr % 3 === 0) {
     acc.push(curr * curr);
   }

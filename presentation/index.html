@@ -30,24 +30,53 @@
 					<small>
 						An exploration into Array.prototype.reduce
 					</small>
+					<aside class="notes">
+						<p>
+							The title of this talk is "Know When To Fold 'Em", a line made famous
+							by Kenny Rogers' song "The Gambler". So I thought I'd switch things
+							up a bit and change my typical black & white background photos...
+						</p>
+					</aside>
         </section>
         <section data-background="images/kenny1.jpeg">
 					<h1>Know When To Fold 'Em</h1>
 					<small>
 						An exploration into Array.prototype.reduce
 					</small>
+					<aside class="notes">
+						<p>
+							I think we can all agree that that is much better.
+						</p>
+						<p>
+							The purpose of this talk is to introduce you to the reduce
+							function, if you're not already familiar, look at some simple uses,
+							get rid of some misconceptions, and see how you might use it
+							to improve your code.
+						</p>
+					</aside>
         </section>
 				<section data-background="images/kenny2.jpeg">
 					<blockquote>
-						The reduce() method applies a function against an accumulator and each value of the array (from left-to-right) to reduce it to a single value...
+						The reduce() method applies a function against an accumulator and
+						each value of the array (from left-to-right) to reduce it to a
+						single value...
 					</blockquote>
 					<cite>Mozilla Developer Network</cite>
 					<aside class="notes">
 						<p>
-							So `reduce` is built into all arrays and is a way to transform the array, item by item, into a new value.
+							This is the MDN definition of reduce:
+							The reduce() method applies a function against an accumulator and
+							each value of the array (from left-to-right) to reduce it to a
+							single value...
 						</p>
 						<p>
-							In order to use `reduce` you need to supply a function to accumulate the values and an initial value. The initial value is optional. If you omit it, the first item in the array is used.
+							So reduce is built into all arrays and is a way to transform the
+							array, item by item, into a new value.
+						</p>
+						<p>
+							In order to use reduce you need to supply a function to accumulate
+							the values and an initial value. The initial value is optional & if
+							you omit it, the first item in the array is used.
 						</p>
 						<p>
 							Here is a simple example to sum all the numbers in a list.
@@ -70,17 +99,17 @@ const sum = xs.reduce((prev, current) => prev + current);
 					</pre>
 					<aside class="notes">
 						<p>
-							In each examples we're going to iterate over the array and apply
+							In each example we're going to iterate over the array and apply
 							the provided function (which is just addition) to the previous value
 							and the current value. The result of that computation will be used
 							as the previous value in the next iteration.
 						</p>
 						<p>
 							The difference between the two is in the initial value that is
-							provided. When ommitted, the first value in the list is used.
+							provided. When ommitted, the first value in the array is used.
 						</p>
 						<p>
-							Here is an illustration of the process.
+							The process can be visualized like so:
 						</p>
 					</aside>
 				</section>
@@ -103,12 +132,25 @@ xs.reduce((prev, curr) => prev + curr)
 					</pre>
 					<aside class="notes">
 						<p>
+							In the first example, we use zero as a initial value, so 0 & 1
+							(the first value in the array) are passed into our function. The
+							result of adding 0 & 1 is 1 so 1 is passed as the first argument
+							to the function at the next iteration. The process continues
+							passing the result of the previous step into the next step until
+							the list is exhausted.
+						</p>
+						<p>
+							The second example works in the same way, but because the last
+							argument was omitted, the function receives 1 & 2 at the first
+							iteration.
+						</p>
+						<p>
 							The name "prev" is a bit of a confusing name. You might think that
 							it represents the result of the previous computation, but in the
-							first iteration, no computation has been performed. You migh then
-							think that represent the previous item in the array, but that is only
-							true in the second example and only for the first iteration. I prefer
-							the name "acc", short for "accumulator".
+							first iteration, no computation has been performed. You might then
+							think that it represents the previous item in the array, but that
+							is only true in the second example and only for the first
+							iteration. I prefer the name "acc", short for "accumulator".
 						</p>
 					</aside>
 				</section>
@@ -188,14 +230,14 @@ for(let i = 0; i < names.length; i++) {
 							representing how often that name occured in the list.
 						</p>
 						<p>
-							On possible solution is to loop over the list, like so.
+							One possible solution is to loop over the list, like so.
 						</p>
 						<p>
 							And it totally works. Except now you've got all kinds of extra stuff
 							to keep in your head. There's a counter and a bounds check. You've
 							got to access each item by index. Of course this all very common
-							and most of us don't have to think twice about keep that stuff in
-							our heads.
+							and most of the time we don't even think twice about keep that
+							stuff in our heads.
 						</p>
 					</aside>
 				</section>
@@ -245,10 +287,16 @@ const nameCounts = names.reduce((acc, name) => {
 					</h3>
 					<aside class="notes">
 						<p>
+							Mutation
+						</p>
+						<p>
 							The most common use of forEach is mutation; reaching into a
-							collection and changing each of the values inside which is not
+							collection and changing each of the values inside, which is not
 							what we want. If we wanted to append the word "rocks!" to each
-							name, that would be a more appropriate use of foreEach
+							name, that would be a more appropriate use of forEach
+						</p>
+						<p>
+							Purity
 						</p>
 						<p>
 							In this case each iteration has to reach outside of the arguments
@@ -312,7 +360,7 @@ const myFilter = (pred, arr) => arr.reduce((acc, curr) => {
 						<p>
 							JavaScript already has lots of built-in functions; we don't need
 							to write them ourselves. What's more, they're on the Array
-							prototype, so we can can them.
+							prototype, so we can chain them.
 						</p>
 						<p>
 							Suppose we had a list of numbers from 1-100, and we wanted to take
@@ -331,14 +379,14 @@ oneToOneHundred
 					<aside class="notes">
 						<p>
 							This is one option. We could use that built-in Array methods to
-							filter out numbers that aren't divisible by 3, and then map a
-							squaring function over the result.
+							filter the numbers that are divisible by 3, and then use map to
+							square them.
 						</p>
 						<p>
 							But that means we pass through the array twice. Each array function
 							enumerates the values, and returns a new array. If more functions
-							get chained, that's more passes through the array. That's ot really
-							a concern here, but what if the array was much larger?
+							get chained, that's more passes through the array. That's not really
+							a concern here, but might be if the array was much larger.
 						</p>
 					</aside>
 				</section>
@@ -380,9 +428,8 @@ oneToOneHundred.reduce((acc, curr) => {
 						</p>
 						<p>
 							Reduce is just about transforming an array into a new value. That
-							value might be something obiously singular like a number or string
-							, but it might be an array or an object; and there is nothing
-							stopping you from turning an array into another array.
+							value might be something obviously singular like a number or string
+							, but it might be an array or an object.
 						</p>
 						<p>
 							Once we see reduce in this light, we see how it can be used to
